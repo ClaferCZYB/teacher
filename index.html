@@ -8,6 +8,31 @@
     <meta name="description" content="教师个人工作操作系统：班级、学生、教学、班主任工作一体化管理" />
     <link rel="manifest" href="./manifest.webmanifest" />
     <title>TeacherOps · 教师工作台</title>
+    <script>
+      /*
+       * 一次性救援脚本（在业务模块加载前执行）。
+       * 旧版 Service Worker 对 index.html 采用 cache-first，重新部署后会持续返回
+       * 缓存中的旧入口页，旧入口引用的 JS 已不存在 → 404 → 白屏。
+       * 这里主动注销历史 SW 并清空缓存，让页面回到干净状态。
+       */
+      (function () {
+        try {
+          var KEY = 'tops:sw-reset';
+          if (localStorage.getItem(KEY) === '2') return;
+          if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function (rs) {
+              rs.forEach(function (r) { r.unregister(); });
+            });
+          }
+          if (window.caches) {
+            caches.keys().then(function (ks) {
+              ks.forEach(function (k) { caches.delete(k); });
+            });
+          }
+          localStorage.setItem(KEY, '2');
+        } catch (e) {}
+      })();
+    </script>
   </head>
   <body class="bg-paper-50 text-ink-900">
     <div id="root"></div>

@@ -1,0 +1,14 @@
+node_modules/
+dist/
+*.tsbuildinfo
+vite.config.ts.timestamp-*.mjs
+
+# 编辑器 / 系统
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# 本地日志
+npm-debug.log*
+yarn-error.log*
